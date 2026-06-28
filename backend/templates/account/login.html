@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block head_title %}Masuk — SEO.ZAIDLY{% endblock %}
+
+{% block main_class %}{% endblock %}
+
+{% block content %}
+<div class="flex min-h-[calc(100vh-3.5rem)]">
+
+  {# ── Left: Brand Panel ────────────────────────────── #}
+  <div class="hidden lg:flex lg:w-[42%] bg-slate-900 flex-col justify-between p-14 relative overflow-hidden select-none">
+
+    {# dot-grid texture #}
+    <div class="pointer-events-none absolute inset-0"
+         style="background-image:radial-gradient(circle, rgba(99,102,241,.35) 1px, transparent 1px);background-size:28px 28px;"></div>
+
+    {# top-right glow #}
+    <div class="pointer-events-none absolute -top-24 -right-24 w-72 h-72 rounded-full bg-indigo-600 opacity-20 blur-3xl"></div>
+
+    {# Brand mark #}
+    <div class="relative">
+      <span class="text-indigo-400 font-bold text-lg tracking-widest uppercase">SEO.ZAIDLY</span>
+    </div>
+
+    {# Hero copy #}
+    <div class="relative space-y-5">
+      <h1 class="text-white font-extrabold leading-[1.15]" style="font-size:clamp(2rem,3.5vw,2.75rem)">
+        Konten SEO<br>
+        <span class="text-indigo-400">otomatis,</span><br>
+        hasil nyata.
+      </h1>
+      <p class="text-slate-400 text-base leading-relaxed max-w-xs">
+        Dari keyword ke artikel 1.200 kata, gambar, dan langsung publish ke WordPress — dalam hitungan menit.
+      </p>
+
+      <div class="flex gap-8 pt-2">
+        <div>
+          <div class="text-white text-2xl font-bold">1.200+</div>
+          <div class="text-slate-500 text-xs mt-0.5">kata/artikel</div>
+        </div>
+        <div>
+          <div class="text-white text-2xl font-bold">25</div>
+          <div class="text-slate-500 text-xs mt-0.5">judul/keyword</div>
+        </div>
+        <div>
+          <div class="text-white text-2xl font-bold">Auto</div>
+          <div class="text-slate-500 text-xs mt-0.5">publish WP</div>
+        </div>
+      </div>
+    </div>
+
+    {# Bottom tagline #}
+    <div class="relative">
+      <div class="w-8 h-px bg-indigo-500 mb-3"></div>
+      <p class="text-slate-500 text-xs leading-relaxed">
+        SaaS SEO untuk content creator &amp; agensi Indonesia.
+      </p>
+    </div>
+  </div>
+
+  {# ── Right: Form Panel ────────────────────────────── #}
+  <div class="flex-1 flex items-center justify-center bg-white px-6 py-12 sm:px-12">
+    <div class="w-full max-w-sm">
+
+      {# Mobile logo #}
+      <div class="lg:hidden mb-8 text-center">
+        <span class="text-indigo-600 font-bold text-xl tracking-widest uppercase">SEO.ZAIDLY</span>
+      </div>
+
+      {# Heading #}
+      <div class="mb-8">
+        <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Selamat datang kembali</h2>
+        <p class="mt-1.5 text-sm text-slate-500">
+          Belum punya akun?
+          <a href="{% url 'account_signup' %}" class="text-indigo-600 hover:text-indigo-700 font-medium underline underline-offset-2">Daftar gratis</a>
+        </p>
+      </div>
+
+      {# Non-field errors #}
+      {% if form.non_field_errors %}
+        <div class="mb-5 rounded-lg border border-red-200 bg-red-50 px-4 py-3">
+          {% for error in form.non_field_errors %}
+            <p class="text-sm text-red-600">{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {# Form #}
+      <form method="post" action="{% url 'account_login' %}" class="space-y-5" novalidate>
+        {% csrf_token %}
+        {{ redirect_field }}
+
+        {# Email #}
+        <div>
+          <label for="{{ form.login.id_for_label }}" class="block text-sm font-medium text-slate-700 mb-1.5">
+            Email
+          </label>
+          <input
+            type="email"
+            name="{{ form.login.html_name }}"
+            id="{{ form.login.id_for_label }}"
+            value="{{ form.login.value|default:'' }}"
+            autocomplete="email"
+            autofocus
+            placeholder="nama@email.com"
+            class="w-full rounded-lg border px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 outline-none transition
+                   {% if form.login.errors %}border-red-400 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-400/25
+                   {% else %}border-slate-300 bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20{% endif %}"
+          >
+          {% for error in form.login.errors %}
+            <p class="mt-1 text-xs text-red-500">{{ error }}</p>
+          {% endfor %}
+        </div>
+
+        {# Password #}
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <label for="{{ form.password.id_for_label }}" class="block text-sm font-medium text-slate-700">
+              Kata Sandi
+            </label>
+            <a href="{% url 'account_reset_password' %}" class="text-xs text-indigo-600 hover:text-indigo-700 underline underline-offset-2">
+              Lupa kata sandi?
+            </a>
+          </div>
+          <input
+            type="password"
+            name="{{ form.password.html_name }}"
+            id="{{ form.password.id_for_label }}"
+            autocomplete="current-password"
+            placeholder="••••••••"
+            class="w-full rounded-lg border px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 outline-none transition
+                   {% if form.password.errors %}border-red-400 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-400/25
+                   {% else %}border-slate-300 bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20{% endif %}"
+          >
+          {% for error in form.password.errors %}
+            <p class="mt-1 text-xs text-red-500">{{ error }}</p>
+          {% endfor %}
+        </div>
+
+        {# Remember me #}
+        <div class="flex items-center gap-2.5">
+          <input
+            type="checkbox"
+            name="{{ form.remember.html_name }}"
+            id="{{ form.remember.id_for_label }}"
+            class="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+          >
+          <label for="{{ form.remember.id_for_label }}" class="text-sm text-slate-600 cursor-pointer">
+            Ingat saya
+          </label>
+        </div>
+
+        {# Submit #}
+        <button
+          type="submit"
+          class="w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white
+                 hover:bg-indigo-700 active:bg-indigo-800
+                 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2
+                 transition-colors"
+        >
+          Masuk
+        </button>
+      </form>
+
+      {# Divider + signup CTA for mobile #}
+      <p class="mt-8 text-center text-xs text-slate-400">
+        Dengan masuk, Anda menyetujui syarat &amp; ketentuan layanan.
+      </p>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block head_title %}Daftar — SEO.ZAIDLY{% endblock %}
+
+{% block main_class %}{% endblock %}
+
+{% block content %}
+<div class="flex min-h-[calc(100vh-3.5rem)]">
+
+  {# ── Left: Brand Panel ────────────────────────────── #}
+  <div class="hidden lg:flex lg:w-[42%] bg-slate-900 flex-col justify-between p-14 relative overflow-hidden select-none">
+
+    {# dot-grid texture #}
+    <div class="pointer-events-none absolute inset-0"
+         style="background-image:radial-gradient(circle, rgba(99,102,241,.35) 1px, transparent 1px);background-size:28px 28px;"></div>
+
+    {# bottom-left glow #}
+    <div class="pointer-events-none absolute -bottom-24 -left-24 w-72 h-72 rounded-full bg-indigo-600 opacity-20 blur-3xl"></div>
+
+    {# Brand mark #}
+    <div class="relative">
+      <span class="text-indigo-400 font-bold text-lg tracking-widest uppercase">SEO.ZAIDLY</span>
+    </div>
+
+    {# Hero copy #}
+    <div class="relative space-y-5">
+      <h1 class="text-white font-extrabold leading-[1.15]" style="font-size:clamp(2rem,3.5vw,2.75rem)">
+        Mulai gratis.<br>
+        <span class="text-indigo-400">Publish lebih</span><br>
+        banyak konten.
+      </h1>
+      <p class="text-slate-400 text-base leading-relaxed max-w-xs">
+        Buat akun dan langsung generate artikel SEO pertama Anda — gratis 10 artikel per bulan.
+      </p>
+
+      {# Feature list #}
+      <ul class="space-y-2.5 pt-2">
+        {% for item in "123" %}{% endfor %}
+        <li class="flex items-center gap-3 text-slate-300 text-sm">
+          <span class="flex-shrink-0 w-5 h-5 rounded-full bg-indigo-600/30 flex items-center justify-center">
+            <svg class="w-3 h-3 text-indigo-400" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          Generate 25 judul SEO per keyword
+        </li>
+        <li class="flex items-center gap-3 text-slate-300 text-sm">
+          <span class="flex-shrink-0 w-5 h-5 rounded-full bg-indigo-600/30 flex items-center justify-center">
+            <svg class="w-3 h-3 text-indigo-400" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          Artikel 1.200 kata + meta description
+        </li>
+        <li class="flex items-center gap-3 text-slate-300 text-sm">
+          <span class="flex-shrink-0 w-5 h-5 rounded-full bg-indigo-600/30 flex items-center justify-center">
+            <svg class="w-3 h-3 text-indigo-400" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          Publish otomatis ke WordPress &amp; Threads
+        </li>
+      </ul>
+    </div>
+
+    {# Bottom tagline #}
+    <div class="relative">
+      <div class="w-8 h-px bg-indigo-500 mb-3"></div>
+      <p class="text-slate-500 text-xs">
+        Gratis 10 artikel/bulan. Upgrade kapan saja.
+      </p>
+    </div>
+  </div>
+
+  {# ── Right: Form Panel ────────────────────────────── #}
+  <div class="flex-1 flex items-center justify-center bg-white px-6 py-12 sm:px-12">
+    <div class="w-full max-w-sm">
+
+      {# Mobile logo #}
+      <div class="lg:hidden mb-8 text-center">
+        <span class="text-indigo-600 font-bold text-xl tracking-widest uppercase">SEO.ZAIDLY</span>
+      </div>
+
+      {# Heading #}
+      <div class="mb-8">
+        <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Buat akun gratis</h2>
+        <p class="mt-1.5 text-sm text-slate-500">
+          Sudah punya akun?
+          <a href="{% url 'account_login' %}" class="text-indigo-600 hover:text-indigo-700 font-medium underline underline-offset-2">Masuk</a>
+        </p>
+      </div>
+
+      {# Non-field errors #}
+      {% if form.non_field_errors %}
+        <div class="mb-5 rounded-lg border border-red-200 bg-red-50 px-4 py-3">
+          {% for error in form.non_field_errors %}
+            <p class="text-sm text-red-600">{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {# Form #}
+      <form method="post" action="{% url 'account_signup' %}" class="space-y-5" novalidate>
+        {% csrf_token %}
+        {{ redirect_field }}
+
+        {# Email #}
+        <div>
+          <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-slate-700 mb-1.5">
+            Email
+          </label>
+          <input
+            type="email"
+            name="{{ form.email.html_name }}"
+            id="{{ form.email.id_for_label }}"
+            value="{{ form.email.value|default:'' }}"
+            autocomplete="email"
+            autofocus
+            placeholder="nama@email.com"
+            class="w-full rounded-lg border px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 outline-none transition
+                   {% if form.email.errors %}border-red-400 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-400/25
+                   {% else %}border-slate-300 bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20{% endif %}"
+          >
+          {% for error in form.email.errors %}
+            <p class="mt-1 text-xs text-red-500">{{ error }}</p>
+          {% endfor %}
+        </div>
+
+        {# Password #}
+        <div>
+          <label for="{{ form.password1.id_for_label }}" class="block text-sm font-medium text-slate-700 mb-1.5">
+            Kata Sandi
+          </label>
+          <input
+            type="password"
+            name="{{ form.password1.html_name }}"
+            id="{{ form.password1.id_for_label }}"
+            autocomplete="new-password"
+            placeholder="Min. 8 karakter"
+            class="w-full rounded-lg border px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 outline-none transition
+                   {% if form.password1.errors %}border-red-400 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-400/25
+                   {% else %}border-slate-300 bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20{% endif %}"
+          >
+          {% for error in form.password1.errors %}
+            <p class="mt-1 text-xs text-red-500">{{ error }}</p>
+          {% endfor %}
+        </div>
+
+        {# Confirm Password #}
+        <div>
+          <label for="{{ form.password2.id_for_label }}" class="block text-sm font-medium text-slate-700 mb-1.5">
+            Konfirmasi Kata Sandi
+          </label>
+          <input
+            type="password"
+            name="{{ form.password2.html_name }}"
+            id="{{ form.password2.id_for_label }}"
+            autocomplete="new-password"
+            placeholder="Ulangi kata sandi"
+            class="w-full rounded-lg border px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 outline-none transition
+                   {% if form.password2.errors %}border-red-400 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-400/25
+                   {% else %}border-slate-300 bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20{% endif %}"
+          >
+          {% for error in form.password2.errors %}
+            <p class="mt-1 text-xs text-red-500">{{ error }}</p>
+          {% endfor %}
+        </div>
+
+        {# Submit #}
+        <button
+          type="submit"
+          class="w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white
+                 hover:bg-indigo-700 active:bg-indigo-800
+                 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2
+                 transition-colors"
+        >
+          Buat Akun Gratis
+        </button>
+      </form>
+
+      <p class="mt-6 text-center text-xs text-slate-400">
+        Dengan mendaftar, Anda menyetujui syarat &amp; ketentuan layanan.
+      </p>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
