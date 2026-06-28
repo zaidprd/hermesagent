@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block head_title %}Dashboard — SEO.ZAIDLY{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-12 gap-6">
+  <aside class="col-span-12 md:col-span-3">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="font-semibold text-slate-700">Project</h2>
+      <a href="{% url 'projects:create' %}" class="text-xs text-indigo-600 hover:underline">+ Baru</a>
+    </div>
+    <ul class="space-y-1">
+      {% for p in projects %}
+        <li>
+          <a href="{{ p.get_absolute_url }}"
+             class="block px-3 py-2 rounded-md hover:bg-white text-sm border border-transparent hover:border-slate-200">
+            {{ p.name }}
+          </a>
+        </li>
+      {% empty %}
+        <li class="text-sm text-slate-400 px-3 py-2">Belum ada project.</li>
+      {% endfor %}
+    </ul>
+  </aside>
+
+  <section class="col-span-12 md:col-span-9">
+    <div class="bg-white rounded-xl border border-slate-200 p-10 text-center">
+      <h1 class="text-xl font-bold mb-2">Selamat datang 👋</h1>
+      <p class="text-slate-500 mb-6">Pilih project di kiri, atau buat project baru untuk mulai.</p>
+      <a href="{% url 'projects:create' %}"
+         class="inline-block bg-indigo-600 text-white px-4 py-2 rounded-md text-sm hover:bg-indigo-700">
+        Buat Project
+      </a>
+    </div>
+  </section>
+</div>
+{% endblock %}

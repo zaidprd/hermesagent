@@ -1,0 +1,27 @@
+<div id="title-{{ t.id }}"
+     class="flex items-center justify-between gap-3 px-3 py-2 rounded-md border {% if t.is_duplicate %}border-amber-200 bg-amber-50{% else %}border-slate-200{% endif %}">
+  <div class="text-sm">
+    <span class="{% if t.status == 'rejected' %}line-through text-slate-400{% endif %}">{{ t.title }}</span>
+    {% if t.is_duplicate %}<span class="ml-2 text-xs text-amber-600">duplikat</span>{% endif %}
+  </div>
+  <div class="flex items-center gap-1 shrink-0">
+    {% if t.status == 'approved' %}
+      <span class="text-xs px-2 py-1 rounded bg-green-100 text-green-700">Disetujui</span>
+      {% if not t.article %}
+        <button hx-post="{% url 'content:article_generate' t.id %}"
+                hx-target="#article-slot-{{ t.id }}"
+                hx-swap="innerHTML"
+                class="text-xs px-2 py-1 rounded bg-indigo-600 text-white hover:bg-indigo-700">
+          Generate Artikel
+        </button>
+      {% endif %}
+    {% elif t.status == 'rejected' %}
+      <span class="text-xs px-2 py-1 rounded bg-slate-100 text-slate-500">Ditolak</span>
+    {% else %}
+      <button hx-post="{% url 'content:title_approve' t.id %}" hx-target="#title-{{ t.id }}" hx-swap="outerHTML"
+              class="text-xs px-2 py-1 rounded bg-green-600 text-white hover:bg-green-700">Setujui</button>
+      <button hx-post="{% url 'content:title_reject' t.id %}" hx-target="#title-{{ t.id }}" hx-swap="outerHTML"
+              class="text-xs px-2 py-1 rounded bg-slate-200 text-slate-600 hover:bg-slate-300">Tolak</button>
+    {% endif %}
+  </div>
+</div>

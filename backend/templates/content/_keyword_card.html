@@ -1,0 +1,28 @@
+<div id="keyword-{{ k.id }}" class="bg-white border border-slate-200 rounded-xl p-5"
+     {% if k.status == 'processing' %}hx-get="{% url 'content:keyword_card' k.id %}" hx-trigger="every 3s" hx-swap="outerHTML"{% endif %}>
+  <div class="flex items-center justify-between mb-3">
+    <h3 class="font-semibold">🔑 {{ k.keyword }}</h3>
+    {% if k.status == 'processing' %}
+      <span class="text-xs text-indigo-600 flex items-center gap-1">
+        <span class="inline-block w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span> Membuat judul…
+      </span>
+    {% else %}
+      <span class="text-xs text-slate-400">{{ k.titles.count }} judul</span>
+    {% endif %}
+  </div>
+
+  {% if k.status != 'processing' %}
+    <div class="space-y-2">
+      {% for t in k.titles.all %}
+        {% include "content/_title_row.html" with t=t %}
+        <div id="article-slot-{{ t.id }}">
+          {% if t.article.pk %}
+            {% include "content/_article_card.html" with article=t.article %}
+          {% endif %}
+        </div>
+      {% empty %}
+        <p class="text-sm text-slate-400">Tidak ada judul dihasilkan.</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>

@@ -1,0 +1,42 @@
+<div id="article-{{ article.id }}"
+     class="mt-2 ml-4 rounded-lg border {% if article.status == 'done' %}border-emerald-200 bg-emerald-50{% elif article.status == 'failed' %}border-red-200 bg-red-50{% else %}border-indigo-200 bg-indigo-50{% endif %} px-4 py-3"
+     {% if article.status == 'processing' %}hx-get="{% url 'content:article_card' article.id %}" hx-trigger="every 4s" hx-swap="outerHTML"{% endif %}>
+
+  {% if article.status == 'processing' %}
+    <div class="flex items-center gap-2 text-sm text-indigo-700">
+      <span class="inline-block w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+      Menulis artikel…
+    </div>
+
+  {% elif article.status == 'done' %}
+    <div class="flex items-center justify-between">
+      <div class="text-sm text-emerald-800">
+        <span class="font-medium">Artikel selesai</span>
+        {% if article.word_count %}<span class="ml-2 text-xs text-emerald-600">({{ article.word_count }} kata)</span>{% endif %}
+        {% if article.publish_status == 'published' %}
+          <span class="ml-2 text-xs px-1.5 py-0.5 rounded bg-emerald-200 text-emerald-800">Published</span>
+        {% elif article.publish_status == 'publishing' %}
+          <span class="ml-2 text-xs text-indigo-600 animate-pulse">Sedang publish…</span>
+        {% endif %}
+      </div>
+      <a href="{% url 'content:article_detail' article.id %}"
+         class="text-xs px-3 py-1 rounded bg-emerald-600 text-white hover:bg-emerald-700">
+        Lihat Artikel
+      </a>
+    </div>
+    {% if article.meta_description %}
+      <p class="mt-1 text-xs text-emerald-700 italic">{{ article.meta_description }}</p>
+    {% endif %}
+
+  {% else %}
+    <div class="flex items-center justify-between">
+      <span class="text-sm text-red-700">Gagal membuat artikel.</span>
+      <button hx-post="{% url 'content:article_generate' article.title_id %}"
+              hx-target="#article-slot-{{ article.title_id }}"
+              hx-swap="innerHTML"
+              class="text-xs px-2 py-1 rounded bg-red-600 text-white hover:bg-red-700">
+        Coba lagi
+      </button>
+    </div>
+  {% endif %}
+</div>

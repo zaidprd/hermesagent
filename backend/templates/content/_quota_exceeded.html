@@ -1,0 +1,14 @@
+<div class="mt-2 ml-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3">
+  <div class="flex items-center justify-between">
+    <div>
+      <p class="text-sm font-medium text-amber-800">Kuota artikel bulan ini habis</p>
+      <p class="text-xs text-amber-600 mt-0.5">
+        Paket Free: {{ sub.articles_this_month }}/{{ sub.free_limit }} artikel digunakan.
+      </p>
+    </div>
+    <a href="{% url 'billing:overview' %}"
+       class="text-xs px-3 py-1.5 rounded bg-amber-500 text-white hover:bg-amber-600 whitespace-nowrap">
+      Upgrade ke Pro
+    </a>
+  </div>
+</div>

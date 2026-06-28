@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block head_title %}Billing — SEO.ZAIDLY{% endblock %}
+
+{% block content %}
+<div class="max-w-lg mx-auto mt-6 space-y-4">
+  <h1 class="text-2xl font-bold">Billing & Langganan</h1>
+
+  {# Current plan card #}
+  <div class="bg-white border border-slate-200 rounded-xl p-6">
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <p class="text-sm text-slate-500">Paket saat ini</p>
+        {% if sub.is_pro_active %}
+          <p class="text-xl font-bold text-indigo-600">Pro</p>
+          {% if sub.valid_until %}
+            <p class="text-xs text-slate-400 mt-0.5">Aktif hingga {{ sub.valid_until|date:"d M Y" }}</p>
+          {% endif %}
+        {% else %}
+          <p class="text-xl font-bold text-slate-700">Free</p>
+          <p class="text-xs text-slate-400 mt-0.5">{{ sub.articles_this_month }}/{{ sub.free_limit }} artikel bulan ini</p>
+        {% endif %}
+      </div>
+      {% if sub.is_pro_active %}
+        <span class="px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 text-sm font-medium">Aktif</span>
+      {% else %}
+        <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-500 text-sm">Free</span>
+      {% endif %}
+    </div>
+
+    {% if not sub.is_pro_active %}
+      {# Quota bar #}
+      <div class="mb-4">
+        <div class="flex justify-between text-xs text-slate-500 mb-1">
+          <span>Artikel digunakan</span>
+          <span>{{ sub.articles_this_month }} / {{ sub.free_limit }}</span>
+        </div>
+        <div class="w-full bg-slate-100 rounded-full h-2">
+          <div class="bg-indigo-500 h-2 rounded-full"
+               style="width: {% widthratio sub.articles_this_month sub.free_limit 100 %}%"></div>
+        </div>
+        <p class="text-xs text-slate-400 mt-1">Reset setiap awal bulan</p>
+      </div>
+    {% endif %}
+  </div>
+
+  {% if not sub.is_pro_active %}
+  {# Upgrade card #}
+  <div class="bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-xl p-6 text-white">
+    <p class="text-sm font-medium text-indigo-200 mb-1">Upgrade ke Pro</p>
+    <p class="text-2xl font-bold mb-1">Rp 99.000 <span class="text-base font-normal text-indigo-200">/ bulan</span></p>
+    <ul class="text-sm text-indigo-100 space-y-1 my-4">
+      <li>✓ Artikel tak terbatas setiap bulan</li>
+      <li>✓ Publish ke WordPress & Threads</li>
+      <li>✓ Prioritas generate lebih cepat</li>
+    </ul>
+    {% if mayar_url %}
+      <a href="{{ mayar_url }}" target="_blank" rel="noopener"
+         class="inline-block w-full text-center bg-white text-indigo-700 font-semibold px-4 py-2.5 rounded-lg hover:bg-indigo-50 transition-colors">
+        Bayar via Mayar.id →
+      </a>
+    {% else %}
+      <p class="text-sm text-indigo-200 italic">Link pembayaran belum dikonfigurasi.</p>
+    {% endif %}
+    <p class="text-xs text-indigo-300 mt-3 text-center">
+      Setelah pembayaran berhasil, akun otomatis diupgrade dalam beberapa menit.
+    </p>
+  </div>
+  {% else %}
+  {# Pro renewal card #}
+  <div class="bg-white border border-slate-200 rounded-xl p-6">
+    <p class="text-sm font-medium text-slate-700 mb-3">Perpanjang langganan</p>
+    {% if mayar_url %}
+      <a href="{{ mayar_url }}" target="_blank" rel="noopener"
+         class="inline-block text-center bg-indigo-600 text-white font-medium px-4 py-2 rounded-lg text-sm hover:bg-indigo-700">
+        Perpanjang via Mayar.id →
+      </a>
+    {% else %}
+      <p class="text-sm text-slate-400 italic">Link pembayaran belum dikonfigurasi.</p>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
