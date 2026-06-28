@@ -12,6 +12,5 @@ urlpatterns = [
     path("titles/<int:title_pk>/article/generate/", views.article_generate, name="article_generate"),
     path("articles/<int:pk>/card/", views.article_card, name="article_card"),
     path("articles/<int:pk>/publish/", views.article_publish, name="article_publish"),
-    path("articles/<int:pk>/threads/", views.article_post_threads, name="article_post_threads"),
     path("articles/<int:pk>/", views.article_detail, name="article_detail"),
 ]

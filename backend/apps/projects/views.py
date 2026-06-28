@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import ProjectForm, ProjectThreadsForm, ProjectWPForm
+from .forms import ProjectForm, ProjectWPForm
 from .models import Project
 
 
@@ -44,17 +44,3 @@ def project_settings(request, pk):
     else:
         form = ProjectWPForm(instance=project)
     return render(request, "projects/settings.html", {"project": project, "form": form})
-
-
-@login_required
-def project_threads_settings(request, pk):
-    project = get_object_or_404(Project, pk=pk, tenant=request.user.tenant)
-    if request.method == "POST":
-        form = ProjectThreadsForm(request.POST, instance=project)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Pengaturan Threads disimpan.")
-            return redirect(project)
-    else:
-        form = ProjectThreadsForm(instance=project)
-    return render(request, "projects/threads_settings.html", {"project": project, "form": form})

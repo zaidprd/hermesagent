@@ -5,13 +5,12 @@ import traceback
 from . import config
 from .client import BackendClient
 from .gateway import AIGateway
-from .tasks import generate_article, generate_title, post_threads, publish_wordpress
+from .tasks import generate_article, generate_title, publish_wordpress
 
 TASKS = {
     "generate_title": generate_title.run,
     "generate_article": generate_article.run,
     "publish_wordpress": publish_wordpress.run,
-    "post_threads": post_threads.run,
 }
 
 

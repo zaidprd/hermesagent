@@ -101,36 +101,15 @@ def on_publish_wordpress_failed(job):
     Article.objects.filter(pk=article_id).update(publish_status=Article.PUBLISH_FAILED)
 
 
-def on_post_threads_completed(job):
-    article_id = (job.payload or {}).get("article_id")
-    if not article_id:
-        return
-    result = job.result or {}
-    Article.objects.filter(pk=article_id).update(
-        threads_status=Article.THREADS_POSTED,
-        threads_post_id=result.get("post_id", ""),
-        threads_post_url=result.get("post_url", ""),
-    )
-
-
-def on_post_threads_failed(job):
-    article_id = (job.payload or {}).get("article_id")
-    if not article_id:
-        return
-    Article.objects.filter(pk=article_id).update(threads_status=Article.THREADS_FAILED)
-
-
 _COMPLETED = {
     "generate_title": on_generate_title_completed,
     "generate_article": on_generate_article_completed,
     "publish_wordpress": on_publish_wordpress_completed,
-    "post_threads": on_post_threads_completed,
 }
 _FAILED = {
     "generate_title": on_generate_title_failed,
     "generate_article": on_generate_article_failed,
     "publish_wordpress": on_publish_wordpress_failed,
-    "post_threads": on_post_threads_failed,
 }
 
 

@@ -41,33 +41,6 @@ class ProjectForm(forms.ModelForm):
         return self.cleaned_data.get("language") or "Indonesia"
 
 
-class ProjectThreadsForm(forms.ModelForm):
-    threads_access_token = forms.CharField(
-        required=False,
-        label="Access Token",
-        widget=forms.PasswordInput(
-            render_value=True,
-            attrs={"class": _TEXT, "placeholder": "EAAxxxxxxx..."},
-        ),
-    )
-
-    class Meta:
-        model = Project
-        fields = ["threads_user_id", "threads_access_token"]
-        widgets = {
-            "threads_user_id": forms.TextInput(
-                attrs={"class": _TEXT, "placeholder": "1234567890"}
-            ),
-        }
-        labels = {
-            "threads_user_id": "Threads User ID",
-            "threads_access_token": "Access Token",
-        }
-        help_texts = {
-            "threads_user_id": "Nomor ID akun Threads kamu (bukan username).",
-            "threads_access_token": "Long-lived token dengan scope threads_content_publish.",
-        }
-
 
 class ProjectWPForm(forms.ModelForm):
     wp_app_password = forms.CharField(

@@ -111,23 +111,6 @@ class Article(TimeStampedModel):
     wp_post_id = models.PositiveIntegerField(null=True, blank=True)
     wp_post_url = models.URLField(max_length=2000, blank=True)
 
-    # Threads post tracking
-    THREADS_NONE = "none"
-    THREADS_POSTING = "posting"
-    THREADS_POSTED = "posted"
-    THREADS_FAILED = "failed"
-    THREADS_STATUS_CHOICES = [
-        (THREADS_NONE, "Belum dipost"),
-        (THREADS_POSTING, "Sedang posting…"),
-        (THREADS_POSTED, "Terpost"),
-        (THREADS_FAILED, "Gagal"),
-    ]
-    threads_status = models.CharField(
-        max_length=20, choices=THREADS_STATUS_CHOICES, default=THREADS_NONE
-    )
-    threads_post_id = models.CharField(max_length=64, blank=True)
-    threads_post_url = models.URLField(max_length=2000, blank=True)
-
     class Meta:
         ordering = ["-created_at"]
 

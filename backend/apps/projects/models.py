@@ -25,10 +25,6 @@ class Project(TimeStampedModel):
     wp_username = models.CharField(max_length=255, blank=True)
     wp_app_password = models.CharField(max_length=255, blank=True)
 
-    # Threads publish target
-    threads_user_id = models.CharField(max_length=64, blank=True)
-    threads_access_token = models.TextField(blank=True)
-
     class Meta:
         ordering = ["-created_at"]
         constraints = [

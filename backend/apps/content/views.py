@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
 from apps.billing.models import Subscription
-from apps.jobs.services import enqueue_generate_article, enqueue_generate_title, enqueue_post_threads, enqueue_publish_wordpress
+from apps.jobs.services import enqueue_generate_article, enqueue_generate_title, enqueue_publish_wordpress
 from apps.projects.models import Project
 
 from .models import Article, Keyword, Title
@@ -104,22 +104,6 @@ def article_publish(request, pk):
     enqueue_publish_wordpress(article)
     return redirect(article)
 
-
-@login_required
-@require_POST
-def article_post_threads(request, pk):
-    article = get_object_or_404(
-        Article.objects.select_related("project"),
-        pk=pk,
-        project__tenant=request.user.tenant,
-        status=Article.DONE,
-    )
-    if article.threads_status not in (Article.THREADS_NONE, Article.THREADS_FAILED):
-        return redirect(article)
-    article.threads_status = Article.THREADS_POSTING
-    article.save(update_fields=["threads_status", "updated_at"])
-    enqueue_post_threads(article)
-    return redirect(article)
 
 
 @login_required

@@ -61,34 +61,3 @@ def enqueue_publish_wordpress(article):
         agent_type="publish_wordpress",
         payload=payload,
     )
-
-
-def _threads_text(article):
-    """Build the Threads post text (max ~500 chars)."""
-    title = article.title.title
-    meta = article.meta_description or ""
-    link = article.wp_post_url or ""
-
-    parts = [title]
-    if meta:
-        parts.append(meta)
-    if link:
-        parts.append(link)
-
-    text = "\n\n".join(parts)
-    return text[:490]
-
-
-def enqueue_post_threads(article):
-    project = article.project
-    payload = {
-        "article_id": article.id,
-        "threads_user_id": project.threads_user_id,
-        "threads_access_token": project.threads_access_token,
-        "text": _threads_text(article),
-    }
-    return Job.objects.create(
-        tenant=project.tenant,
-        agent_type="post_threads",
-        payload=payload,
-    )

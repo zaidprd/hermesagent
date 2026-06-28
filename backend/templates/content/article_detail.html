@@ -51,36 +51,6 @@
       </a>
     {% endif %}
 
-    {# Threads post button #}
-    {% if article.threads_status == 'posted' %}
-      <a href="{{ article.threads_post_url }}" target="_blank" rel="noopener"
-         class="text-xs px-3 py-1 rounded bg-purple-100 text-purple-700 hover:bg-purple-200">
-        ✓ Threads Posted →
-      </a>
-    {% elif article.threads_status == 'posting' %}
-      <span class="text-xs px-3 py-1 rounded bg-purple-100 text-purple-700 animate-pulse">
-        Sedang post Threads…
-      </span>
-    {% elif article.threads_status == 'failed' %}
-      <form method="post" action="{% url 'content:article_post_threads' article.id %}">
-        {% csrf_token %}
-        <button class="text-xs px-3 py-1 rounded bg-red-600 text-white hover:bg-red-700">
-          Coba post Threads lagi
-        </button>
-      </form>
-    {% elif article.project.threads_user_id %}
-      <form method="post" action="{% url 'content:article_post_threads' article.id %}">
-        {% csrf_token %}
-        <button class="text-xs px-3 py-1 rounded bg-purple-600 text-white hover:bg-purple-700">
-          Post ke Threads
-        </button>
-      </form>
-    {% else %}
-      <a href="{% url 'projects:threads_settings' article.project.pk %}"
-         class="text-xs px-3 py-1 rounded border border-slate-300 text-slate-500 hover:bg-slate-50">
-        Set Threads credentials dulu
-      </a>
-    {% endif %}
   </div>
 </div>
 
